@@ -204,7 +204,3 @@ class Person:
         if country in iso_codes:
             return iso_codes[country]
         return country
-
-
-john_doe = Person(country='ar')
-print(john_doe.identity)
