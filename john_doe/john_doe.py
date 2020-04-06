@@ -1,10 +1,10 @@
+from re import sub
 from datetime import date
-from re import sub as remove
 from random import choice as choose, randint
-from misc import countries, country_alt_names
+from countries import countries, country_alt_names
 from importlib import import_module as import_this
 from area_codes import world_area_codes, us_area_codes
-from country_codes import iso_codes, iso_codes_reverse, country_codes
+from country_codes import iso_codes, iso_codes_reversed, country_codes
 
 
 class Person:
@@ -79,7 +79,7 @@ class Person:
         '''
         generate age and d.o.b.
         '''
-        days_in_ = {
+        days_in_month = {
             1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
             7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31
         }
@@ -87,7 +87,7 @@ class Person:
             raise ValueError('invalid age range')
         age = randint(self.age[0], self.age[1])
         month = randint(1, 12)
-        day = randint(1, days_in_[month])
+        day = randint(1, days_in_month[month])
         year = date.today().year - age
         return age, f'{day}-{month}-{year}'
 
@@ -110,14 +110,14 @@ class Person:
         generate a (phoney) email
         '''
         # TODO: expand this
-        first = remove(r" |'|\-", '', self.first_name)
-        last = remove(r" |'|\-", '', self.last_name)
+        first = sub(r" |'|\-", '', self.first_name)
+        last = sub(r" |'|\-", '', self.last_name)
         number = randint(1, 999)
         separator = choose(('-', '_', '.', ''))
         format = (f'{first}{separator}{last}{number}',
                   f'{first[0]}{separator}{last}{number}',
                   f'{first}{separator}{last[0]}{number}')
-        return choose(format) + '@mentiormail.{}'.format(iso_codes_reverse[self.country])
+        return choose(format) + '@mentiormail.{}'.format(iso_codes_reversed[self.country])
 
     def generate_sex(self):
         '''
@@ -139,7 +139,7 @@ class Person:
         generate a country
         '''
         if self.country:
-            country = Person.correct(self.country.lower())
+            country = self.correct(self.country.lower())
             if country not in countries:
                 raise ValueError('country not implemented')
         else:
@@ -148,7 +148,7 @@ class Person:
 
     def generate_phone(self):
         '''
-        generate (phoney) phone number
+        generate (phony) phone number
         '''
         if self.country == 'united states':
             return '1-{}-{}-{}'.format(choose(us_area_codes[self.state]),
@@ -168,7 +168,7 @@ class Person:
 
     def generate_social(self):
         '''
-        generate (phoney) social security number (for u.s.)
+        generate (phony) social security number (for u.s.)
         '''
         return '{}-{}-{}'.format(''.join(str(randint(1, 9)) for _ in range(3)),
                                  ''.join(str(randint(1, 9)) for _ in range(2)),
@@ -176,7 +176,7 @@ class Person:
 
     def generate_identity(self):
         '''
-        generate a identity
+        generate an identity
         '''
         self.country = self.generate_country()
         self.sex = self.generate_sex()
@@ -194,8 +194,7 @@ class Person:
     ############################################
 
 
-    @staticmethod
-    def correct(country):
+    def correct(self, country):
         '''
         correct country name if entered in an alternate or abbreviated form
         '''

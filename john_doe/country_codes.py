@@ -130,7 +130,7 @@ iso_codes = {
     'vn': 'vietnam'
 }
 
-iso_codes_reverse = {
+iso_codes_reversed = {
     'argentina': 'ar',
     'australia': 'au',
     'austria': 'at',
