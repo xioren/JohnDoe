@@ -32,9 +32,7 @@ class Person:
 
     @property
     def identity(self):
-        '''
-        compiled identity information
-        '''
+        '''compiled identity information'''
         return f'NAME: {self.full_name}\n' \
                f'SEX: {self.sex}\nDOB: {self.dob} ' \
                f'AGE: {self.age}\nBIRTHPLACE: {self.birthplace}\n' \
@@ -42,16 +40,12 @@ class Person:
 
     @property
     def full_name(self):
-        '''
-        first last
-        '''
+        '''first last'''
         return f'{self.first_name} {self.last_name}'
 
     @property
     def birthplace(self):
-        '''
-        city[, state], country[, zip]
-        '''
+        '''city[, state], country[, zip]'''
         if self.state:
             return f'{self.city}, {self.state}, {self.country}, {self.zip_code}'
         else:
@@ -64,9 +58,7 @@ class Person:
 
 
     def generate_name(self):
-        '''
-        generate full name based on country and sex
-        '''
+        '''generate full name based on country and sex'''
         names_list = import_this('names.' + self.country.replace(' ', '_'))
         if self.sex == 'male':
             first_name = choose(names_list.male).lower()
@@ -76,9 +68,7 @@ class Person:
         return first_name, last_name
 
     def generate_dob(self):
-        '''
-        generate age and d.o.b.
-        '''
+        '''generate age and d.o.b.'''
         days_in_month = {
             1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30,
             7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31
@@ -92,9 +82,7 @@ class Person:
         return age, f'{day}-{month}-{year}'
 
     def generate_birthplace(self):
-        '''
-        generate a place of birth
-        '''
+        '''generate a place of birth'''
         country_data = import_this('cities.' + self.country.replace(' ', '_'))
         if self.country == 'united states':
             state = choose(country_data.states).lower()
@@ -106,9 +94,7 @@ class Person:
             return choose(country_data.cities).lower(), None, None
 
     def generate_email(self):
-        '''
-        generate a (phoney) email
-        '''
+        '''generate a (phoney) email'''
         # TODO: expand this
         first = sub(r" |'|\-", '', self.first_name)
         last = sub(r" |'|\-", '', self.last_name)
@@ -120,9 +106,7 @@ class Person:
         return choose(format) + '@mentiormail.{}'.format(iso_codes_reversed[self.country])
 
     def generate_sex(self):
-        '''
-        generates a sex
-        '''
+        '''generates a sex'''
         abbreviated = {'m': 'male', 'f': 'female'}
         if self.sex:
             sex = self.sex.lower()
@@ -135,9 +119,7 @@ class Person:
         return sex
 
     def generate_country(self):
-        '''
-        generate a country
-        '''
+        '''generate a country'''
         if self.country:
             country = self.correct(self.country.lower())
             if country not in countries:
@@ -147,9 +129,7 @@ class Person:
         return country
 
     def generate_phone(self):
-        '''
-        generate (phony) phone number
-        '''
+        '''generate (phony) phone number'''
         if self.country == 'united states':
             return '1-{}-{}-{}'.format(choose(us_area_codes[self.state]),
                                        ''.join(str(randint(1, 9)) for _ in range(3)),
@@ -161,23 +141,17 @@ class Person:
                                         ''.join(str(randint(1, 9)) for _ in range(4))).replace('--', '-')
 
     def generate_zip(self, range):
-        '''
-        generate a zip code (for u.s. states)
-        '''
+        '''generate a zip code (for u.s. states)'''
         return randint(range[0], range[1])
 
     def generate_social(self):
-        '''
-        generate (phony) social security number (for u.s.)
-        '''
+        '''generate (phony) social security number (for u.s.)'''
         return '{}-{}-{}'.format(''.join(str(randint(1, 9)) for _ in range(3)),
                                  ''.join(str(randint(1, 9)) for _ in range(2)),
                                  ''.join(str(randint(1, 9)) for _ in range(4)))
 
     def generate_identity(self):
-        '''
-        generate an identity
-        '''
+        '''generate an identity'''
         self.country = self.generate_country()
         self.sex = self.generate_sex()
         self.first_name, self.last_name = self.generate_name()
@@ -195,9 +169,7 @@ class Person:
 
 
     def correct(self, country):
-        '''
-        correct country name if entered in an alternate or abbreviated form
-        '''
+        '''correct country name if entered in an alternate or abbreviated form'''
         if country in country_alt_names:
             return country_alt_names[country]
         if country in iso_codes:
