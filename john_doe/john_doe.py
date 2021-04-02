@@ -1,8 +1,9 @@
 from re import sub
 from datetime import date
 from random import choice as choose, randint
-from countries import countries, country_alt_names
 from importlib import import_module as import_this
+
+from countries import countries, country_alt_names
 from area_codes import world_area_codes, us_area_codes
 from country_codes import iso_codes, iso_codes_reversed, country_codes
 
@@ -94,7 +95,7 @@ class Person:
             return choose(country_data.cities).lower(), None, None
 
     def generate_email(self):
-        '''generate a (phoney) email'''
+        '''generate a (phony) email'''
         # TODO: expand this
         first = sub(r" |'|\-", '', self.first_name)
         last = sub(r" |'|\-", '', self.last_name)
